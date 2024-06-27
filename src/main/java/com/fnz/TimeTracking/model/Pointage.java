@@ -19,6 +19,16 @@ public class Pointage {
 
 
     @ManyToOne
-    @JoinColumn(name = "id_utilisateur")
-    private Utilisateur utilisateur;
+    Utilisateur utilisateur;
+
+    @OneToOne
+    @JoinColumn(name="id_départ")
+    private Départ depart;
+
+    @OneToOne
+    @JoinColumn(name="id_arrivée")
+    private Arrivée arrivée;
+
+
+
 }

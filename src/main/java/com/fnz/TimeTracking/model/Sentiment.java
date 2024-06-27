@@ -14,7 +14,6 @@ public class Sentiment {
     private String sentiment;
 
     @ManyToOne
-    @JoinColumn(name = "id_utilisateur")
-    private Utilisateur utilisateur;
+    Utilisateur utilisateur;
 
 }

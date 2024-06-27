@@ -1,7 +1,9 @@
 package com.fnz.TimeTracking.model;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
 import java.time.LocalDateTime;
 
 @Getter
@@ -15,8 +17,7 @@ public class Permission {
     private LocalDateTime heureSortie;
     private LocalDateTime heureRetour;
 
-    @ManyToOne
-    @JoinColumn(name = "id_utilisateur")
-    private Utilisateur utilisateur;
+    @OneToOne
+    private Congé congé;
 
 }

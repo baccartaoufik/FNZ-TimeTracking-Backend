@@ -20,4 +20,6 @@ public class Départ {
     @ManyToOne
     @JoinColumn(name = "id_utilisateur")
     private Utilisateur utilisateur;
+
+
 }

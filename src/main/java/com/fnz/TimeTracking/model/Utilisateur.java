@@ -1,10 +1,9 @@
 package com.fnz.TimeTracking.model;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
 import java.util.Set;
 
 @Getter
@@ -23,23 +22,25 @@ public class Utilisateur {
     private String sexe;
     private String role;
     private String département;
+    // Implement the getUsername and getPassword methods
+    //@Getter
+    //private String username; // Add a username field
+    //@Getter
+    //private String password; // Add a password field
 
-    @OneToMany(mappedBy = "utilisateur")
-    private Set<Pointage> pointages;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy="utilisateur")
+    private Set<Pointage> Pointages;
 
-    @OneToMany(mappedBy = "utilisateur")
-    private Set<Congé> conges;
+    @OneToMany(cascade = CascadeType.ALL)
+    private Set<Congé> congés;
 
-    @OneToMany(mappedBy = "utilisateur")
-    private Set<Sentiment> sentiments;
 
-    @OneToMany(mappedBy = "utilisateur")
-    private Set<Arrivée> arrivees;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy="utilisateur")
+    private Set<Sentiment> Sentiments;
 
-    @OneToMany(mappedBy = "utilisateur")
-    private Set<Départ> departs;
 
-    @OneToMany(mappedBy = "utilisateur")
-    private Set<Permission> permissions;
+    @ManyToOne
+    @JoinColumn(name = "id_role")
+    private Role roles;
 
 }
