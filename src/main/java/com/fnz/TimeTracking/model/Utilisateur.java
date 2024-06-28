@@ -23,10 +23,10 @@ public class Utilisateur {
     private String role;
     private String département;
     // Implement the getUsername and getPassword methods
-    //@Getter
-    //private String username; // Add a username field
-    //@Getter
-    //private String password; // Add a password field
+    @Getter
+    private String username; // Add a username field
+    @Getter
+    private String password; // Add a password field
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy="utilisateur")
     private Set<Pointage> Pointages;
@@ -43,4 +43,10 @@ public class Utilisateur {
     @JoinColumn(name = "id_role")
     private Role roles;
 
+    public boolean isValid() {
+        // Example validity check: all fields must be non-null
+        return nom != null && prenom != null && email != null && telephone != null &&
+                titre != null && photo != null && sexe != null && role != null &&
+                département != null && username != null && password != null;
+    }
 }
