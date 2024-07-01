@@ -24,29 +24,9 @@ public class JwtAuthInterceptor implements HandlerInterceptor
 
   @Override
   public boolean preHandle( HttpServletRequest request, HttpServletResponse response, Object handler ) throws Exception {
-    if (handler instanceof HandlerMethod ) {
-      Method method = ((HandlerMethod) handler).getMethod();
-      if (method.isAnnotationPresent(com.fnz.TimeTracking.utils.JwtAuth.class)) {
-        String authHeader = request.getHeader("Authorization");
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-          response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Missing or invalid Authorization header.");
-          return false;
-        }
-
-        String token = authHeader.substring(7);
-        try {
-          // Assume Utilisateur class has a method to retrieve user details by email
-          String email = jwtUtil.extractUsername(token);
-          Utilisateur userDetails = utilisateurRepository.findByEmail( email );// fetch user details using email
-          if (!jwtUtil.validateToken(token, userDetails)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid token.");
-            return false;
-          }
-        } catch (Exception e) {
-          response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid token.");
-          return false;
-        }
-      }
+    if (handler instanceof HandlerMethod )
+    {
+      Method method = ( (HandlerMethod) handler ).getMethod();
     }
     return true;
   }
