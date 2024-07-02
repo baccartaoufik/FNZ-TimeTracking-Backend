@@ -12,7 +12,7 @@ public class WebConfig implements WebMvcConfigurer
   private JwtAuthInterceptor jwtAuthInterceptor;
 
   @Override
-  public void addInterceptors( InterceptorRegistry registry ) {
-    registry.addInterceptor( jwtAuthInterceptor );
+  public void addInterceptors(InterceptorRegistry registry) {
+    registry.addInterceptor(jwtAuthInterceptor);
   }
 }
