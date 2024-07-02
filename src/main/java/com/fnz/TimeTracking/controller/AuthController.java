@@ -34,7 +34,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestParam("file") MultipartFile file) {
-        try {
+
             ResponseEntity<String> response = authService.validateFace(file);
 
             if (response.getStatusCode() == HttpStatus.OK) {
@@ -53,8 +53,7 @@ public class AuthController {
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid face recognition");
             }
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error during login process");
-        }
+
+
     }
 }

@@ -33,7 +33,7 @@ public class AuthService {
 
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
 
-        String url = pythonMicroserviceUrl + "/login";
+        String url = pythonMicroserviceUrl + "/validate";
         return restTemplate.postForEntity(url, requestEntity, String.class);
     }
 }
