@@ -36,11 +36,4 @@ public class AuthService {
         String url = pythonMicroserviceUrl + "/login";
         return restTemplate.postForEntity(url, requestEntity, String.class);
     }
-
-    public Utilisateur loadUserByUsername(String email) {
-        RestTemplate restTemplate = new RestTemplate();
-        String url = pythonMicroserviceUrl + "/load-user-by-username";
-        return restTemplate.postForObject(url, email, Utilisateur.class);
-
-    }
 }
