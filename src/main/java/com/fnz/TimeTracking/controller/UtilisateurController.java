@@ -2,6 +2,7 @@ package com.fnz.TimeTracking.controller;
 
 import com.fnz.TimeTracking.model.Utilisateur;
 import com.fnz.TimeTracking.service.UtilisateurService;
+import com.fnz.TimeTracking.utils.JwtAuth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class UtilisateurController {
         Utilisateur savedUtilisateur = utilisateurService.saveUtilisateur(utilisateur);
         return ResponseEntity.ok(savedUtilisateur);
     }
-
+    @JwtAuth
     @GetMapping
     public ResponseEntity<List<Utilisateur>> getAllUtilisateurs() {
         List<Utilisateur> utilisateurs = utilisateurService.getAllUtilisateurs();

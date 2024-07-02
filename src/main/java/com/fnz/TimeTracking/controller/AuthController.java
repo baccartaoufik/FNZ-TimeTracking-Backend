@@ -1,43 +1,59 @@
 package com.fnz.TimeTracking.controller;
 import com.fnz.TimeTracking.model.Utilisateur;
+import com.fnz.TimeTracking.repository.UtilisateurRepository;
 import com.fnz.TimeTracking.service.AuthService;
 import com.fnz.TimeTracking.service.JwtUtil;
+import com.fnz.TimeTracking.service.UtilisateurService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.*;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.Collections;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
-public class AuthController
-{
-    @Autowired
-    private AuthService authService;
+public class AuthController {
+
+    private final AuthService authService;
+    private final JwtUtil jwtUtil;
+    private final UtilisateurRepository utilisateurRepository;
 
     @Autowired
-    private JwtUtil jwtUtil;
-
-    @PostMapping("/login")
-    public ResponseEntity<?> login( @RequestBody Map<String, String> request ) {
-        String image = request.get("image");
-        Utilisateur userDetails = authService.validateFace(image);
-
-        if (userDetails != null) {
-            String token = jwtUtil.generateToken(userDetails);
-            return ResponseEntity.ok( Collections.singletonMap("token", token ) );
-        } else {
-            return ResponseEntity.status( HttpStatus.UNAUTHORIZED ).body("Invalid face recognition" );
-        }
+    public AuthController(AuthService authService, JwtUtil jwtUtil, UtilisateurRepository utilisateurRepository) {
+        this.authService = authService;
+        this.jwtUtil = jwtUtil;
+        this.utilisateurRepository = utilisateurRepository;
     }
 
-    @GetMapping("/test")
-    public ResponseEntity<String> test() {
-        return ResponseEntity.status( HttpStatus.OK ).body( jwtUtil.generateToken( new Utilisateur() ) );
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestParam("file") MultipartFile file) {
+
+            ResponseEntity<String> response = authService.validateFace(file);
+
+            if (response.getStatusCode() == HttpStatus.OK) {
+                String email = response.getBody();
+                if (email != null && !email.isEmpty()) {
+                    Utilisateur user = utilisateurRepository.findByEmail(email);
+                    if (user != null) {
+                        String token = jwtUtil.generateToken(user);
+                        return ResponseEntity.ok(Collections.singletonMap("token", token));
+                    } else {
+                        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found");
+                    }
+                } else {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid response from face recognition service");
+                }
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid face recognition");
+            }
+
+
     }
 }
