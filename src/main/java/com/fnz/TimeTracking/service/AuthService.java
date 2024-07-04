@@ -1,4 +1,5 @@
 package com.fnz.TimeTracking.service;
+import com.fnz.TimeTracking.dto.ValidateFaceResponse;
 import com.fnz.TimeTracking.model.Utilisateur;
 import lombok.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -23,7 +24,7 @@ public class AuthService {
         this.restTemplate = restTemplateBuilder.build();
     }
 
-    public ResponseEntity<String> validateFace(MultipartFile file) {
+    public ResponseEntity<ValidateFaceResponse> validateFace( MultipartFile file ) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
@@ -34,6 +35,6 @@ public class AuthService {
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
 
         String url = pythonMicroserviceUrl + "/validate";
-        return restTemplate.postForEntity(url, requestEntity, String.class);
+        return restTemplate.postForEntity(url, requestEntity, ValidateFaceResponse.class);
     }
 }
