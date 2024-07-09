@@ -1,0 +1,42 @@
+menu:
+  items:
+    - name: Tracker
+      icon: FaClipboardList
+      active: true
+      roles:
+        - USER
+        - ADMIN
+        - RH
+    - name: Dashboard
+      icon: FaChartBar
+      active: true
+      roles:
+        - USER
+        - ADMIN
+        - RH
+    - name: Calendar
+      icon: FaCalendarAlt
+      active: true
+      roles:
+        - USER
+        - ADMIN
+        - RH
+    - name: Holiday
+      icon: FaUmbrellaBeach
+      active: true
+      roles:
+        - USER
+        - ADMIN
+        - RH
+    - name: User Profile
+      icon: FaUserCircle
+      active: true
+      roles:
+        - USER
+        - ADMIN
+        - RH
+    - name: Management
+      icon: FaCogs
+      active: true
+      roles:
+        -ADMIN
