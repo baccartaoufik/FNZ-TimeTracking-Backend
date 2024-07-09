@@ -2,6 +2,7 @@ package com.fnz.TimeTracking.controller;
 
 import com.fnz.TimeTracking.model.MenuItem;
 import com.fnz.TimeTracking.service.MenuService;
+import com.fnz.TimeTracking.utils.JwtAuth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -19,6 +20,9 @@ public class MenuController {
     @Autowired
     private MenuService menuService;
 
+
+    // TODO: Change when Role Managment is implemented
+    @JwtAuth
     @GetMapping("/menu")
     public ResponseEntity<List<MenuItem>> getMenu() {
         List<MenuItem> menu = menuService.getMenuForRole("user");
