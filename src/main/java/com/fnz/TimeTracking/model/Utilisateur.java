@@ -9,7 +9,7 @@ import java.util.Set;
 @Entity
 public class Utilisateur {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idUtilisateur;
     private String nom;
     private String prenom;
@@ -18,8 +18,11 @@ public class Utilisateur {
     private String titre;
     private String photo;
     private String sexe;
-    private String role;
+
     private String département;
+
+
+
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy="utilisateur")
     private Set<Pointage> Pointages;
@@ -32,11 +35,13 @@ public class Utilisateur {
 
     @ManyToOne
     @JoinColumn(name = "id_role")
-    private Role roles;
+    private Role role;
 
     public boolean isValid() {
         return nom != null && prenom != null && email != null && telephone != null &&
-                titre != null && photo != null && sexe != null && role != null &&
+                titre != null && photo != null && sexe != null &&
                 département != null ;
     }
+
+
 }
