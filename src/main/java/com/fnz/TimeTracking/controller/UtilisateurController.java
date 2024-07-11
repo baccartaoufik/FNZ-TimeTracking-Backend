@@ -45,4 +45,12 @@ public class UtilisateurController {
         utilisateurService.deleteUtilisateur(id);
         return ResponseEntity.ok().build();
     }
+
+    @JwtAuth(roles = {"ROLE_USER"})
+    @GetMapping("/test")
+    public ResponseEntity<String> testAdminAccess() {
+        return ResponseEntity.ok("Admin access granted");
+    }
+
+
 }

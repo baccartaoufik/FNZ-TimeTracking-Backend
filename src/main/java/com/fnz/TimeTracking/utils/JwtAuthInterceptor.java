@@ -52,7 +52,7 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
           JwtAuth jwtAuth = method.getAnnotation(JwtAuth.class);
           String[] allowedRoles = jwtAuth.roles();
 
-          if (allowedRoles.length == 0 || Arrays.asList(allowedRoles).contains(userDetails.getRole())) {
+          if (allowedRoles.length == 0 || Arrays.asList(allowedRoles).contains(userDetails.getRole().getNomRole())) {
             return true;
           } else {
             response.setStatus(HttpStatus.FORBIDDEN.value());

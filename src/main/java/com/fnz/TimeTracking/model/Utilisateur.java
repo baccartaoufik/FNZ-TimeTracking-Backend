@@ -18,11 +18,7 @@ public class Utilisateur {
     private String titre;
     private String photo;
     private String sexe;
-
     private String département;
-
-
-
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy="utilisateur")
     private Set<Pointage> Pointages;

@@ -23,14 +23,13 @@ public class MenuController {
 
     @Autowired
     private MenuService menuService;
+
     @Autowired
     private JwtUtil jwtUtil;
 
     @Autowired
     private UtilisateurRepository utilisateurRepository;
 
-
-    // TODO: Change when Role Managment is implemented
     @JwtAuth
     @GetMapping("/menu")
     public ResponseEntity<List<MenuItem>> getMenu(HttpServletRequest request) {
