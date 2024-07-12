@@ -18,7 +18,7 @@ public class AuthService {
     final private RestTemplate restTemplate;
 
 
-    private String pythonMicroserviceUrl="http://localhost:5000";
+    private String pythonMicroserviceUrl="http://flask-app:5000";
 
     AuthService(RestTemplateBuilder restTemplateBuilder) {
         this.restTemplate = restTemplateBuilder.build();

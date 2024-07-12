@@ -40,14 +40,10 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
         String email = jwtUtil.extractUsername(token);
         Utilisateur userDetails = utilisateurRepository.findByEmail(email);
 
-
-
-
         if (userDetails == null) {
           response.setStatus(HttpStatus.UNAUTHORIZED.value());
           return false;
         }
-
         if (jwtUtil.validateToken(token, userDetails)) {
           JwtAuth jwtAuth = method.getAnnotation(JwtAuth.class);
           String[] allowedRoles = jwtAuth.roles();
