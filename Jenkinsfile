@@ -1,10 +1,16 @@
 pipeline {
     agent any
     triggers {
-    eventTrigger jmespathQuery(
-        "((action == 'opened' || action == 'reopened' || action == 'synchronize') && pull_request.base.ref == '${githubBranch}' && contains(repository.clone_url, '${githubRepo}'))"
-    )
-}
+        githubPullRequest(
+            triggerPhrase: '.*[Tt]est.*',
+            onlyTriggerPhrase: false,
+            useGitHubHooks: true,
+            permitAll: false,
+            autoCloseFailedPullRequests: false,
+            displayBuildErrorsOnDownstreamBuilds: false,
+            whiteListTargetBranches: ['${githubBranch}']
+        )
+    }
     stages {
         stage('Checkout') {
             steps {
