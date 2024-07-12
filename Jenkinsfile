@@ -27,7 +27,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Push Docker Image') {
             steps {
                 script {
@@ -38,10 +38,10 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Deploy Docker Container') {
             steps {
-c                script {
+                script {
                     echo 'Stopping and removing existing Docker container...'
                     sh '''
                     docker stop springboot || true
