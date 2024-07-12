@@ -1,8 +1,11 @@
 pipeline {
     agent any
-
     triggers {
-        githubPullRequests()
+        githubPullRequests(
+            triggerOnPullRequest: true,
+            triggerOnPush: true,
+            commentFilters: []
+        )
     }
 
     stages {
