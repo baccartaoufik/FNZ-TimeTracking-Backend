@@ -1,79 +1,58 @@
 pipeline {
-
     agent any
-
-
-
-    environment {
-
-        DOCKER_CREDENTIALS_ID = 'dockerhub-credentials-fnz-id'
-
-        IMAGE_NAME = 'raniabenabdallah11/springboot-backend'
-
+    triggers {
+        eventTrigger jmespathQuery(
+            "((action == 'opened' || action == 'reopened' || 
+                action == 'synchronize') 
+             && pull_request.base.ref == '${githubBranch}' 
+             && contains(repository.clone_url, '${githubRepo}'))"
+        )
     }
-
-
-
     stages {
-
         stage('Checkout') {
-
             steps {
-
-                git branch: 'main', url: 'https://github.com/baccartaoufik/FNZ-TimeTracking-Backend.git'
-
-            }
-
-        }
-
-        stage('Build') {
-
-            steps {
-
                 script {
-
-                    dockerImage = docker.build("${env.IMAGE_NAME}:${env.BUILD_ID}")
-
+                    checkout scm
                 }
-
             }
-
         }
 
-        stage('Push') {
-
+        stage('Build and Test') {
             steps {
-
                 script {
+                    sh 'mvn clean package'
+                }
+            }
+        }
 
-                    docker.withRegistry('https://index.docker.io/v1/', "${env.DOCKER_CREDENTIALS_ID}") {
-
-                        dockerImage.push("${env.BUILD_ID}")
-
-                        dockerImage.push('latest')
-
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    sh 'docker build -t raniabenabdallah11/timetracking-backend:latest .'
+                }
+            }
+        }
+        
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    withDockerRegistry(credentialsId: 'dockerhub-credentials-fnz-id', url: 'https://index.docker.io/v1/') {
+                        sh 'docker push raniabenabdallah11/timetracking-backend:latest'
                     }
-
                 }
-
             }
-
         }
-
-        stage('Deploy') {
-
+        
+        stage('Deploy Docker Container') {
             steps {
-
                 script {
-
-                    sh 'docker stop springboot-backend || true && docker rm springboot-backend || true && docker run -d --name springboot-backend -p 8080:8080 ${env.IMAGE_NAME}:latest'
-
+                    sh '''
+                    docker stop springboot || true
+                    docker rm springboot || true
+                    docker run -d --name springboot -p 8081:8080 raniabenabdallah11/timetracking-backend:latest
+                    '''
                 }
-
             }
-
         }
-
     }
-
 }
