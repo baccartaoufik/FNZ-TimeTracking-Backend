@@ -1,20 +1,15 @@
 pipeline {
     agent any
+
     triggers {
-        githubPullRequest(
-            triggerPhrase: '.*[Tt]est.*',
-            onlyTriggerPhrase: false,
-            useGitHubHooks: true,
-            permitAll: false,
-            autoCloseFailedPullRequests: false,
-            displayBuildErrorsOnDownstreamBuilds: false,
-            whiteListTargetBranches: ['${githubBranch}']
-        )
+        githubPullRequests()
     }
+
     stages {
         stage('Checkout') {
             steps {
                 script {
+                    echo 'Checking out the source code...'
                     checkout scm
                 }
             }
@@ -23,6 +18,7 @@ pipeline {
         stage('Build and Test') {
             steps {
                 script {
+                    echo 'Building the project...'
                     sh 'mvn clean package'
                 }
             }
@@ -31,6 +27,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
+                    echo 'Building the Docker image...'
                     sh 'docker build -t raniabenabdallah11/timetracking-backend:latest .'
                 }
             }
@@ -39,6 +36,7 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
+                    echo 'Pushing the Docker image to Docker Hub...'
                     withDockerRegistry(credentialsId: 'dockerhub-credentials-fnz-id', url: 'https://index.docker.io/v1/') {
                         sh 'docker push raniabenabdallah11/timetracking-backend:latest'
                     }
@@ -49,13 +47,16 @@ pipeline {
         stage('Deploy Docker Container') {
             steps {
                 script {
+                    echo 'Stopping and removing existing Docker container...'
                     sh '''
                     docker stop springboot || true
                     docker rm springboot || true
-                    docker run -d --name springboot -p 8081:8080 raniabenabdallah11/timetracking-backend:latest
                     '''
+                    echo 'Running the new Docker container...'
+                    sh 'docker run -d --name springboot -p 8081:8080 raniabenabdallah11/timetracking-backend:latest'
                 }
             }
         }
     }
 }
+
