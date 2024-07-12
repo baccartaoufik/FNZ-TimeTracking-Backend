@@ -1,5 +1,13 @@
 pipeline {
     agent any
+triggers {
+        eventTrigger jmespathQuery(
+            "((action == 'opened' || action == 'reopened' || 
+                action == 'synchronize') 
+             && pull_request.base.ref == '${githubBranch}' 
+             && contains(repository.clone_url,'${githubRepo}'))"
+        )
+    }
     stages {
         stage('Checkout') {
             steps {
@@ -41,7 +49,7 @@ pipeline {
         
         stage('Deploy Docker Container') {
             steps {
-                script {
+c                script {
                     echo 'Stopping and removing existing Docker container...'
                     sh '''
                     docker stop springboot || true
