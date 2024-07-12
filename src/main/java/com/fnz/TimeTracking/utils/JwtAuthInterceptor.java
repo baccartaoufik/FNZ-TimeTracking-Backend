@@ -12,6 +12,7 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
 @Component
 public class JwtAuthInterceptor implements HandlerInterceptor {
@@ -36,17 +37,23 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
         }
 
         String token = authHeader.substring(7);
-
         String email = jwtUtil.extractUsername(token);
-
         Utilisateur userDetails = utilisateurRepository.findByEmail(email);
+
         if (userDetails == null) {
           response.setStatus(HttpStatus.UNAUTHORIZED.value());
           return false;
         }
-
         if (jwtUtil.validateToken(token, userDetails)) {
-          return true;
+          JwtAuth jwtAuth = method.getAnnotation(JwtAuth.class);
+          String[] allowedRoles = jwtAuth.roles();
+
+          if (allowedRoles.length == 0 || Arrays.asList(allowedRoles).contains(userDetails.getRole().getNomRole())) {
+            return true;
+          } else {
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+            return false;
+          }
         } else {
           response.setStatus(HttpStatus.UNAUTHORIZED.value());
           return false;
