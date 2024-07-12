@@ -1,13 +1,5 @@
 pipeline {
     agent any
-    triggers {
-        githubPullRequests(
-            triggerOnPullRequest: true,
-            triggerOnPush: true,
-            commentFilters: []
-        )
-    }
-
     stages {
         stage('Checkout') {
             steps {
