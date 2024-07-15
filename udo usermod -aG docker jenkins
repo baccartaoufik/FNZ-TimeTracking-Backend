@@ -1,0 +1,36 @@
+[0;1;32m●[0m docker.service - Docker Application Container Engine
+     Loaded: loaded (]8;;file://localhost.localdomain/usr/lib/systemd/system/docker.service/usr/lib/systemd/system/docker.service]8;;; [0;1;32menabled[0m; preset: [0;1;38;5;185mdisabled[0m)
+     Active: [0;1;32mactive (running)[0m since Thu 2024-07-11 12:22:51 CEST; 24h ago
+TriggeredBy: [0;1;32m●[0m docker.socket
+       Docs: ]8;;https://docs.docker.comhttps://docs.docker.com]8;;
+   Main PID: 1229 (dockerd)
+      Tasks: 134
+     Memory: 496.0M
+        CPU: 2min 4.234s
+     CGroup: /system.slice/docker.service
+             ├─[0;38;5;245m 1229 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock[0m
+             ├─[0;38;5;245m 4009 /usr/bin/docker-proxy -proto tcp -host-ip 0.0.0.0 -host-port 3306 -container-ip 172.17.0.2 -container-port 3306[0m
+             ├─[0;38;5;245m 4028 /usr/bin/docker-proxy -proto tcp -host-ip :: -host-port 3306 -container-ip 172.17.0.2 -container-port 3306[0m
+             ├─[0;38;5;245m 7530 /usr/bin/docker-proxy -proto tcp -host-ip 0.0.0.0 -host-port 5000 -container-ip 172.19.0.2 -container-port 5000[0m
+             ├─[0;38;5;245m 7536 /usr/bin/docker-proxy -proto tcp -host-ip :: -host-port 5000 -container-ip 172.19.0.2 -container-port 5000[0m
+             ├─[0;38;5;245m 7670 /usr/bin/docker-proxy -proto tcp -host-ip 0.0.0.0 -host-port 8081 -container-ip 172.19.0.3 -container-port 8081[0m
+             ├─[0;38;5;245m 7685 /usr/bin/docker-proxy -proto tcp -host-ip :: -host-port 8081 -container-ip 172.19.0.3 -container-port 8081[0m
+             ├─[0;38;5;245m26499 /usr/bin/docker-proxy -proto tcp -host-ip 0.0.0.0 -host-port 8082 -container-ip 172.17.0.4 -container-port 8080[0m
+             ├─[0;38;5;245m26506 /usr/bin/docker-proxy -proto tcp -host-ip :: -host-port 8082 -container-ip 172.17.0.4 -container-port 8080[0m
+             ├─[0;38;5;245m26517 /usr/bin/docker-proxy -proto tcp -host-ip 0.0.0.0 -host-port 50002 -container-ip 172.17.0.4 -container-port 50000[0m
+             ├─[0;38;5;245m26533 /usr/bin/docker-proxy -proto tcp -host-ip :: -host-port 50002 -container-ip 172.17.0.4 -container-port 50000[0m
+             ├─[0;38;5;245m94181 /usr/bin/docker-proxy -proto tcp -host-ip 0.0.0.0 -host-port 80 -container-ip 172.19.0.4 -container-port 80[0m
+             ├─[0;38;5;245m94195 /usr/bin/docker-proxy -proto tcp -host-ip :: -host-port 80 -container-ip 172.19.0.4 -container-port 80[0m
+             ├─[0;38;5;245m95730 /usr/bin/docker-proxy -proto tcp -host-ip 0.0.0.0 -host-port 8080 -container-ip 172.17.0.3 -container-port 8080[0m
+             └─[0;38;5;245m95737 /usr/bin/docker-proxy -proto tcp -host-ip :: -host-port 8080 -container-ip 172.17.0.3 -container-port 8080[0m
+
+juil. 12 02:33:24 localhost.localdomain dockerd[1229]: time="2024-07-12T02:33:24.119594076+02:00" level=error msg="stream copy error: reading from a closed fifo"
+juil. 12 02:33:24 localhost.localdomain dockerd[1229]: time="2024-07-12T02:33:24.121399874+02:00" level=error msg="Error running exec 8a1abfae94681dfc2be1c4b3cfb7174dd78c6a42e8e6bb0c939f60e002cde3da in container: OCI runtime exec failed: exec failed: unable to start container process: exec: \"/usr/bin/dotnet\": stat /usr/bin/dotnet: no such file or directory: unknown"
+juil. 12 02:33:24 localhost.localdomain dockerd[1229]: time="2024-07-12T02:33:24.436139024+02:00" level=error msg="stream copy error: reading from a closed fifo"
+juil. 12 02:33:24 localhost.localdomain dockerd[1229]: time="2024-07-12T02:33:24.436149469+02:00" level=error msg="stream copy error: reading from a closed fifo"
+juil. 12 02:33:24 localhost.localdomain dockerd[1229]: time="2024-07-12T02:33:24.438261896+02:00" level=error msg="Error running exec 800647bcae86d899182190dd81edb90c213ba3ea092c01453bdd07b91e02119d in container: OCI runtime exec failed: exec failed: unable to start container process: exec: \"/bin/ps\": stat /bin/ps: no such file or directory: unknown"
+juil. 12 02:33:24 localhost.localdomain dockerd[1229]: time="2024-07-12T02:33:24.529636840+02:00" level=error msg="stream copy error: reading from a closed fifo"
+juil. 12 02:33:24 localhost.localdomain dockerd[1229]: time="2024-07-12T02:33:24.529636888+02:00" level=error msg="stream copy error: reading from a closed fifo"
+juil. 12 02:33:24 localhost.localdomain dockerd[1229]: time="2024-07-12T02:33:24.531210529+02:00" level=error msg="Error running exec e3b8024b7d1422ea173558c0494e58001944c634c1cd6dc9bf4b2a2e6ec04e8b in container: OCI runtime exec failed: exec failed: unable to start container process: exec: \"/bin/ps\": stat /bin/ps: no such file or directory: unknown"
+juil. 12 10:20:39 localhost.localdomain dockerd[1229]: time="2024-07-12T10:20:39.985757510+02:00" level=info msg="ignoring event" container=a9fcde2a52d995bce3cc6012166d05c221b313dd992af17bf0c2c3b189e539f2 module=libcontainerd namespace=moby topic=/tasks/delete type="*events.TaskDelete"
+juil. 12 10:48:44 localhost.localdomain dockerd[1229]: time="2024-07-12T10:48:44.335676639+02:00" level=info msg="ignoring event" container=a712fac4b1cf3e7d8ea0698fd7fb6dc8202cc5524bf15b1de190f81420aec7c4 module=libcontainerd namespace=moby topic=/tasks/delete type="*events.TaskDelete"
