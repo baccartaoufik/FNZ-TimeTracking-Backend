@@ -26,7 +26,7 @@ WORKDIR /app
 
 # Copier le fichier JAR généré à partir de l'étape précédente
 COPY --from=builder /app/target/*.jar app.jar
-
+ENV SPRING_PROFILES_ACTIVE=prod
 # Exposer le port utilisé par votre application (dans le cas de Spring Boot, souvent 8080 par défaut)
 EXPOSE 8080
 
