@@ -28,7 +28,7 @@ WORKDIR /app
 COPY --from=builder /app/target/*.jar app.jar
 ENV SPRING_PROFILES_ACTIVE=prod
 # Exposer le port utilisé par votre application (dans le cas de Spring Boot, souvent 8080 par défaut)
-EXPOSE 8080
+EXPOSE 8081
 
 # Commande pour exécuter l'application Spring Boot lorsque le conteneur démarre
 ENTRYPOINT ["java", "-jar", "app.jar"]
