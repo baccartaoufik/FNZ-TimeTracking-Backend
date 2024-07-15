@@ -25,3 +25,4 @@
 #Open a terminal.
 #Add the environment variable to your shell configuration file
 #export FLASK_API_ENDPOINT=http://your-flask-api-endpoint
+#Test
