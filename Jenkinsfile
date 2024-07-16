@@ -4,14 +4,21 @@ pipeline {
         githubPush()
     }
     environment {
-     MAVEN_SETTINGS = '/usr/share/maven/conf/settings.xml'
+        MAVEN_SETTINGS = '/usr/share/maven/conf/settings.xml'
+        DOCKER_REGISTRY = 'docker.io/raniabenabdallah11'
+        IMAGE_NAME = 'timetracking-backend'
+        IMAGE_TAG = 'latest'
+        SPLUNK_HEC_URL = 'https://172.16.4.16:8088/services/collector/event'
+        SPLUNK_HEC_TOKEN = '687ac127-b1bb-4128-bdc9-e9c7d3e7e3a9'
     }
     stages {
         stage('Checkout') {
             steps {
                 script {
                     echo 'Checking out the source code...'
+                    sh "curl -k ${SPLUNK_HEC_URL} -H 'Authorization: Splunk ${SPLUNK_HEC_TOKEN}' -d '{\"event\": \"Checkout started\", \"sourcetype\": \"_json\"}'"
                     checkout scm
+                    sh "curl -k ${SPLUNK_HEC_URL} -H 'Authorization: Splunk ${SPLUNK_HEC_TOKEN}' -d '{\"event\": \"Checkout completed\", \"sourcetype\": \"_json\"}'"
                 }
             }
         }
@@ -20,9 +27,10 @@ pipeline {
             steps {
                 script {
                     echo 'Building the project...'
+                    sh "curl -k ${SPLUNK_HEC_URL} -H 'Authorization: Splunk ${SPLUNK_HEC_TOKEN}' -d '{\"event\": \"Build and Test started\", \"sourcetype\": \"_json\"}'"
                     sh "cat ${env.MAVEN_SETTINGS}"
-
                     sh "mvn clean package -s ${env.MAVEN_SETTINGS}"
+                    sh "curl -k ${SPLUNK_HEC_URL} -H 'Authorization: Splunk ${SPLUNK_HEC_TOKEN}' -d '{\"event\": \"Build and Test completed\", \"sourcetype\": \"_json\"}'"
                 }
             }
         }
@@ -31,11 +39,12 @@ pipeline {
             steps {
                 script {
                     echo 'Building the Docker image...'
+                    sh "curl -k ${SPLUNK_HEC_URL} -H 'Authorization: Splunk ${SPLUNK_HEC_TOKEN}' -d '{\"event\": \"Build Docker Image started\", \"sourcetype\": \"_json\"}'"
                     sh 'docker build -t raniabenabdallah11/timetracking-backend:latest .'
                     sh "cat ${env.MAVEN_SETTINGS}"
-                
-                sh "mvn clean install -s ${env.MAVEN_SETTINGS}"
-                 }
+                    sh "mvn clean install -s ${env.MAVEN_SETTINGS}"
+                    sh "curl -k ${SPLUNK_HEC_URL} -H 'Authorization: Splunk ${SPLUNK_HEC_TOKEN}' -d '{\"event\": \"Build Docker Image completed\", \"sourcetype\": \"_json\"}'"
+                }
             }
         }
 
@@ -43,9 +52,11 @@ pipeline {
             steps {
                 script {
                     echo 'Pushing the Docker image to Docker Hub...'
+                    sh "curl -k ${SPLUNK_HEC_URL} -H 'Authorization: Splunk ${SPLUNK_HEC_TOKEN}' -d '{\"event\": \"Push Docker Image started\", \"sourcetype\": \"_json\"}'"
                     withDockerRegistry(credentialsId: 'dockerhub-credentials-fnz-id', url: 'https://index.docker.io/v1/') {
                         sh 'docker push raniabenabdallah11/timetracking-backend:latest'
                     }
+                    sh "curl -k ${SPLUNK_HEC_URL} -H 'Authorization: Splunk ${SPLUNK_HEC_TOKEN}' -d '{\"event\": \"Push Docker Image completed\", \"sourcetype\": \"_json\"}'"
                 }
             }
         }
@@ -59,12 +70,27 @@ pipeline {
                     docker rm springboot || true
                     '''
                     echo 'Running the new Docker container...'
+                    sh "curl -k ${SPLUNK_HEC_URL} -H 'Authorization: Splunk ${SPLUNK_HEC_TOKEN}' -d '{\"event\": \"Deploy Docker Container started\", \"sourcetype\": \"_json\"}'"
                     sh 'docker run -d --name springboot -p 8081:8081 raniabenabdallah11/timetracking-backend:latest'
                     sh "cat ${env.MAVEN_SETTINGS}"
-
                     sh "mvn deploy -s ${env.MAVEN_SETTINGS}"
-
+                    sh "curl -k ${SPLUNK_HEC_URL} -H 'Authorization: Splunk ${SPLUNK_HEC_TOKEN}' -d '{\"event\": \"Deploy Docker Container completed\", \"sourcetype\": \"_json\"}'"
                 }
+            }
+        }
+    }
+    
+    post {
+        success {
+            script {
+                echo 'Pipeline executed successfully!'
+                sh "curl -k ${SPLUNK_HEC_URL} -H 'Authorization: Splunk ${SPLUNK_HEC_TOKEN}' -d '{\"event\": \"Pipeline executed successfully!\", \"sourcetype\": \"_json\"}'"
+            }
+        }
+        failure {
+            script {
+                echo 'Pipeline failed.'
+                sh "curl -k ${SPLUNK_HEC_URL} -H 'Authorization: Splunk ${SPLUNK_HEC_TOKEN}' -d '{\"event\": \"Pipeline failed.\", \"sourcetype\": \"_json\"}'"
             }
         }
     }
