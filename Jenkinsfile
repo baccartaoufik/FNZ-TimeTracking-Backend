@@ -27,7 +27,9 @@ pipeline {
                 script {
                     echo 'Building the Docker image...'
                     sh 'docker build -t raniabenabdallah11/timetracking-backend:latest .'
-                }
+                
+                sh 'mvn clean install'
+                 }
             }
         }
 
@@ -51,7 +53,9 @@ pipeline {
                     docker rm springboot || true
                     '''
                     echo 'Running the new Docker container...'
-                    sh 'docker run -d --name springboot -p 8081:8080 raniabenabdallah11/timetracking-backend:latest'
+                    sh 'docker run -d --name springboot -p 8081:8081 raniabenabdallah11/timetracking-backend:latest'
+                    sh 'mvn deploy'
+
                 }
             }
         }
