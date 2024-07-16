@@ -3,6 +3,9 @@ pipeline {
     triggers {
         githubPush()
     }
+    environment {
+     MAVEN_SETTINGS = '/usr/share/maven/conf/settings.xml'
+    }
     stages {
         stage('Checkout') {
             steps {
@@ -17,7 +20,7 @@ pipeline {
             steps {
                 script {
                     echo 'Building the project...'
-                    sh 'mvn clean package'
+                    sh 'mvn clean package' -s ${env.MAVEN_SETTINGS}"
                 }
             }
         }
@@ -28,7 +31,7 @@ pipeline {
                     echo 'Building the Docker image...'
                     sh 'docker build -t raniabenabdallah11/timetracking-backend:latest .'
                 
-                sh 'mvn clean install'
+                sh 'mvn clean install' -s ${env.MAVEN_SETTINGS}"
                  }
             }
         }
@@ -54,7 +57,7 @@ pipeline {
                     '''
                     echo 'Running the new Docker container...'
                     sh 'docker run -d --name springboot -p 8081:8081 raniabenabdallah11/timetracking-backend:latest'
-                    sh 'mvn deploy'
+                    sh 'mvn deploy' -s ${env.MAVEN_SETTINGS}"
 
                 }
             }
