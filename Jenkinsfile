@@ -20,7 +20,7 @@ pipeline {
             steps {
                 script {
                     echo 'Building the project...'
-                    sh 'mvn clean package' -s ${env.MAVEN_SETTINGS}"
+                    sh "mvn clean package -s ${env.MAVEN_SETTINGS}"
                 }
             }
         }
@@ -31,7 +31,7 @@ pipeline {
                     echo 'Building the Docker image...'
                     sh 'docker build -t raniabenabdallah11/timetracking-backend:latest .'
                 
-                sh 'mvn clean install' -s ${env.MAVEN_SETTINGS}"
+                sh "mvn clean install -s ${env.MAVEN_SETTINGS}"
                  }
             }
         }
@@ -57,7 +57,7 @@ pipeline {
                     '''
                     echo 'Running the new Docker container...'
                     sh 'docker run -d --name springboot -p 8081:8081 raniabenabdallah11/timetracking-backend:latest'
-                    sh 'mvn deploy' -s ${env.MAVEN_SETTINGS}"
+                    sh "mvn deploy -s ${env.MAVEN_SETTINGS}"
 
                 }
             }
