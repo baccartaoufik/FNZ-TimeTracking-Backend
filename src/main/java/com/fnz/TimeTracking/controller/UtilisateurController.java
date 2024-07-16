@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/utilisateur")
+@RequestMapping("/api/users")
 public class UtilisateurController {
 
     @Autowired
@@ -21,9 +21,10 @@ public class UtilisateurController {
         Utilisateur savedUtilisateur = utilisateurService.saveUtilisateur(utilisateur);
         return ResponseEntity.ok(savedUtilisateur);
     }
-    @JwtAuth
+    @JwtAuth(roles = {"ROLE_ADMIN"})
     @GetMapping
     public ResponseEntity<List<Utilisateur>> getAllUtilisateurs() {
+        System.out.println("Fetching all users");
         List<Utilisateur> utilisateurs = utilisateurService.getAllUtilisateurs();
         return ResponseEntity.ok(utilisateurs);
     }

@@ -2,6 +2,7 @@ menu:
   items:
     - name: Tracker
       icon: FaClipboardList
+      path: /tracker
       active: true
       roles:
         - ROLE_USER
@@ -9,6 +10,7 @@ menu:
         - ROLE_RH
     - name: Dashboard
       icon: FaChartBar
+      path: /dashboard
       active: true
       roles:
         - ROLE_USER
@@ -16,6 +18,7 @@ menu:
         - ROLE_RH
     - name: Calendar
       icon: FaCalendarAlt
+      path: /calendar
       active: true
       roles:
         - ROLE_USER
@@ -23,6 +26,7 @@ menu:
         - ROLE_RH
     - name: Holiday
       icon: FaUmbrellaBeach
+      path: /holiday
       active: true
       roles:
         - ROLE_USER
@@ -30,6 +34,7 @@ menu:
         - ROLE_RH
     - name: User Profile
       icon: FaUserCircle
+      path: /user-profile
       active: true
       roles:
         - ROLE_USER
@@ -37,6 +42,14 @@ menu:
         - ROLE_RH
     - name: Management
       icon: FaCogs
+      path: /manage
       active: true
       roles:
         - ROLE_ADMIN
+      subItems:
+        - name: Users
+          icon: FaUserCircle
+          path: /app/manage/users
+          active: true
+          roles:
+            - ROLE_ADMIN
