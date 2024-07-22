@@ -1,8 +1,6 @@
 package com.fnz.TimeTracking.model;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import java.util.Set;
@@ -13,11 +11,12 @@ import java.util.Set;
 public class Role {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id_Role;
     private String nomRole;
     private String privilege;
 
     @OneToMany(mappedBy = "role")
+    @JsonIgnore
     private Set<Utilisateur> utilisateurs;
 }

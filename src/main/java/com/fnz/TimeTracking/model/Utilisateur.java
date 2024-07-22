@@ -1,4 +1,5 @@
 package com.fnz.TimeTracking.model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,7 +30,8 @@ public class Utilisateur {
     @OneToMany(cascade = CascadeType.ALL, mappedBy="utilisateur")
     private Set<Sentiment> Sentiments;
 
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_role")
     private Role role;
 

@@ -59,6 +59,11 @@ public class JwtUtil {
         return extractExpiration(token).before(new Date());
     }
 
+    public String extractRole(String token) {
+        Claims claims = extractAllClaims(token);
+        return claims.get("Role", String.class);
+    }
+
     public String extractTokenFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {

@@ -19,7 +19,7 @@ public class MenuService {
 
         for (MenuConfig.MenuItemConfig itemConfig : menuConfig.getItems()) {
             if (itemConfig.getRoles().contains(role.toUpperCase())) {
-                menu.add(new MenuItem(itemConfig.getName(), itemConfig.getIcon(), itemConfig.isActive()));
+                menu.add(new MenuItem(itemConfig.getName(), itemConfig.getIcon(), itemConfig.isActive(), itemConfig.getSubItems()));
             }
         }
 
