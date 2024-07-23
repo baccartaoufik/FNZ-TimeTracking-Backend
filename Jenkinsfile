@@ -10,6 +10,9 @@ pipeline {
         IMAGE_TAG = 'latest'
         SPLUNK_HEC_URL = 'https://172.16.4.16:8088/services/collector/event'
         SPLUNK_HEC_TOKEN = '687ac127-b1bb-4128-bdc9-e9c7d3e7e3a9'
+	SONARQUBE_URL = 'http://172.16.4.17:9000'
+        SONARQUBE_TOKEN = 'squ_f1a4c50a1f8989164fc530b578e26bd6a069237c'
+        SONAR_SCANNER_HOME = tool 'SonarQubeScanner'
     }
     stages {
         stage('Checkout') {
@@ -19,6 +22,24 @@ pipeline {
                     sh "curl -k ${SPLUNK_HEC_URL} -H 'Authorization: Splunk ${SPLUNK_HEC_TOKEN}' -d '{\"event\": \"Checkout started\", \"sourcetype\": \"_json\"}'"
                     checkout scm
                     sh "curl -k ${SPLUNK_HEC_URL} -H 'Authorization: Splunk ${SPLUNK_HEC_TOKEN}' -d '{\"event\": \"Checkout completed\", \"sourcetype\": \"_json\"}'"
+                }
+            }
+        }
+	stage('SonarQube Analysis') {
+            steps {
+		script {
+                    // Notify Splunk
+                    sh "curl -k ${SPLUNK_HEC_URL} -H 'Authorization: Splunk ${SPLUNK_HEC_TOKEN}' -d '{\"event\": \"SonarQube Analysis started\", \"sourcetype\": \"_json\"}'"
+                }
+                withSonarQubeEnv('SonarQube') {
+                    sh "./mvnw sonar:sonar"
+                }
+            }
+        }
+        stage('Quality Gate') {
+            steps {
+                timeout(time: 1, unit: 'HOURS') {
+                    waitForQualityGate abortPipeline: true
                 }
             }
         }
