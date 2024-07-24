@@ -15,6 +15,7 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/auth")
+@CrossOrigin(origins = "http://172.16.4.17")
 public class AuthController {
 
     private final AuthService authService;

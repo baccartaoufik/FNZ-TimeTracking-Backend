@@ -112,6 +112,11 @@
 					<mainClass>com.fnz.TimeTracking.TimeTrackingApplication</mainClass>
 				</configuration>
 			</plugin>
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-deploy-plugin</artifactId>
+    <version>3.1.2</version>
+</plugin>
 
 
 
@@ -120,5 +125,14 @@
 
 
 	</build>
-
+<distributionManagement>
+        <repository>
+            <id>releases</id>
+            <url>http://172.16.4.17:8084/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <url>http://172.16.4.17:8084/repository/maven-snapshots/</url>
+        </snapshotRepository>
+</distributionManagement>
 </project>
