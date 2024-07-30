@@ -1,5 +1,6 @@
 package com.fnz.TimeTracking.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,10 +9,11 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Utilisateur {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idUtilisateur;
+    private long id_utilisateur;
     private String nom;
     private String prenom;
     private String email;
